@@ -1,10 +1,11 @@
 {
-  "name": "tmonitor",
+  "name": "tweetometro",
   "version": "0.0.1",
   "description": "Ejemplo de consumor y stats en twitter",
   "dependencies": {
     "argsparser": "*",
     "body-parser": "*",
+    "config": "^1.21.0",
     "cookie-parser": "*",
     "debug": "^2.2.0",
     "express": "*",

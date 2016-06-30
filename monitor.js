@@ -1,11 +1,15 @@
-var debug = require("debug")("tmetrics:monitor");
-var args = require('argsparser').parse();
-var env = args['-env'] || "dev";
-var conf = require("./conf")(env);
-var mongojs = require("mongojs");
-var db = mongojs(conf.mongo.db, conf.mongo.collections);
-var keywords = require("./libs/keywords");
-var hits = require("./libs/hits");
+"use strict";
+
+const debug = require("debug")("tweetometro:monitor");
+const args = require('argsparser').parse();
+const env = args['-env'] || "dev";
+const conf = require("config");
+const mongojs = require("mongojs");
+const db = mongojs(conf.get("mongo.db"), conf.get("mongo.collections"));
+const keywordsClass = require("./libs/keywords");
+const hitsClass = require("./libs/hits");
+const Twitter = require('node-twitter');
+
 
 var context = {
   db: db
@@ -14,17 +18,17 @@ var context = {
 };
 
 
-keywords = new keywords(context);
-hits = new hits(context);
+const keywords = new keywordsClass(context);
+const hits = new hitsClass(context);
 
 
-var Twitter = require('node-twitter');
+
 
 var twitterStreamClient = new Twitter.StreamClient(
-    'yd18NwzuM9lc1uaGlw', //CONSUMER_KEY
-    'jn5iDu4eQ1DqxMu0dMyl4wjXAzKtHqvqx1Ru6kcs', //CONSUMER_SECRET
-    '174770913-u75czhuRcBZoZL54enzIvsgkWZyUHqcHsqqdMD5A', //TOKEN
-    'Jdt7uc4uupVIKJUhabo1K9BmOguHwkY4ljZ5846vqQ' //TOKEN_SECRET
+    conf.get("twitter.CONSUMER_KEY"),
+    conf.get("twitter.CONSUMER_SECRET"),
+    conf.get("twitter.TOKEN"),
+    conf.get("twitter.TOKEN_SECRET")
 );
 
 
@@ -63,7 +67,7 @@ var tAction = function(tweet){
 };
 
 
-var saveController = function(){
+const saveController = function(){
     var tweet = tweetsStore.shift();
     hits.save(tweet)
         .then(function(){
@@ -84,6 +88,7 @@ keywords.loadKeywords()
         console.log('Tracking: ', keys);
 
         for(var k in keys) trackKeywords.push( k );
+
         if(trackKeywords.length>0){
             twitterStreamClient.on('tweet', tAction);
             twitterStreamClient.start(trackKeywords);

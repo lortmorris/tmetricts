@@ -22,7 +22,7 @@ admins.prototype.add = function(params){
     var ps = shasum.update(params.password).digest("hex");
 
 
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve, reject)=>{
 
         self.db.admins.save({
             email: params.email

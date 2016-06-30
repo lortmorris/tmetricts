@@ -1,29 +1,27 @@
+"use strict";
+
+require("debug")("tweetometro:libs:keywords");
 
 function keywords(context){
     var self = this;
-
     self.db  = context.db;
     self.init();
-};
-
-
+}
 
 
 keywords.prototype.addKey = function(id, key){
     var self  =this;
 
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve, reject)=>{
         self.db.keywords.save({
             keyword: key
             ,target: id
             ,count: 0
-        }, function(err, docs){
-            if(err){ reject('Error FJF100'); }
-            else resolve(docs);
+        }, (err, docs)=>{
+            err ?  reject('Error FJF100') : resolve(docs);
         });
     });
-
-};
+}
 
 
 keywords.prototype.process = function(hit){
@@ -50,16 +48,15 @@ keywords.prototype.process = function(hit){
     }
 
 
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve, reject)=>{
 
         self.db.hits.update({_id: self.db.ObjectId(hit._id.toString())}
-            ,{$set: $set}, function(err, d){
-                if(err){ reject(err);}
-                else resolve(d);
+            ,{$set: $set}, (err, d)=>{
+                err ?  reject(err): resolve(d);
             });
     });
 
-};
+}
 
 
 keywords.prototype.updateKeywordsStats = function(){

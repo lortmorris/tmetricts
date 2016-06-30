@@ -9,10 +9,9 @@ function hits(context){
 hits.prototype.save = function(){
     var self = this;
 
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve, reject)=>{
         self.db.hits.save(hit, function(err, docs){
-            if(err) reject('Error HTH200 '+err);
-            else resolve(docs);
+            err ?  reject('Error HTH200 '+err) :  resolve(docs);
         });
     });
 };

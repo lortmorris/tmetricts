@@ -1,0 +1,16 @@
+{
+  "mongo": {
+    "host": "127.0.0.1",
+    "db": "tmetrics",
+    "collections": ["keywords","targets","stats","hits","comments","admins"]
+  },
+  "express": {
+    "port": 1234
+  },
+  "twitter":{
+    "CONSUMER_KEY": "yd18NwzuM9lc1uaGlw",
+    "CONSUMER_SECRET": "jn5iDu4eQ1DqxMu0dMyl4wjXAzKtHqvqx1Ru6kcs",
+    "TOKEN": "174770913-u75czhuRcBZoZL54enzIvsgkWZyUHqcHsqqdMD5A",
+    "TOKEN_SECRET": "Jdt7uc4uupVIKJUhabo1K9BmOguHwkY4ljZ5846vqQ"
+  }
+}
